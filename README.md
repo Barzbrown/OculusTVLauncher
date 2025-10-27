@@ -1,27 +1,33 @@
-# Oculus TV Launcher
+# Nova Construct
 
-A simple launcher to start apps directly into Oculus TV on the Oculus Go - even while offline.
+Nova Construct is a WebXR spatial workspace for Meta Quest headsets (Quest 2 and newer). It provides a voice-enabled AI assistant named Nova who collaborates with you inside an infinite "Construct" space inspired by The Matrix.
 
-## Background
-The Oculus TV app on the Oculus Go supports running normal Android apps via a virtual screen. Apps that have an existing Android TV UI (leanback) are displayed in the "Unknown Sources" list at the bottom of the UI.
+## Features
 
-Other Android applications can be run too, but they need to be launched from another application.
+- Immersive WebXR environment rendered with Three.js and vanilla ES modules.
+- Floating AI-powered boards for notes, web summaries, file uploads, memories, and generated images.
+- Voice-enabled assistant avatar with speech bubble and mouth animation synced to browser text-to-speech.
+- Left wrist menu toolbelt for spawning new content, uploading files, asking Nova questions, performing web searches, opening external web windows, generating AI art, toggling sketch mode, loading persistent memory, and customizing Nova's avatar.
+- Right-hand ray-based interactions and 3D sketching similar to Tilt Brush when sketch mode is enabled.
 
-Unfortunately Oculus TV refuses to show the list of "Unknown Sources" when no network connection is available.
+## Running Locally
 
-This application fakes being a real VR application so the Oculus Go launcher will show it in the "Unknown Sources" list under the main library.
+Serve the repository statically so that `/public` is available at the root and `/src` can be imported directly. For example:
 
-## Usage
-
-Install the apk on your Oculus Go via ADB.
-
-Select the launcher from the "Unknown Sources" tab under Library.
-
-## Modifying
-
-To change which application is launched, change the the `target_package` value in `app/src/main/res/values/strings.xml`. This needs to match the package name of the installed application.
-
-To get a list of installed packages:
+```bash
+npx http-server .
 ```
-adb shell pm list packages
-```
+
+Then open `http://localhost:8080/public/index.html` in the Meta Quest browser, press the **Enter VR** button, and interact with Nova Construct.
+
+## Backend Endpoints
+
+This client expects Emergent backend endpoints to be reachable relative to the same origin:
+
+- `POST /api/chat`
+- `POST /api/web`
+- `POST /api/image`
+- `POST /api/upload`
+- `GET /api/memory`
+
+These endpoints return JSON payloads documented in `src/api.js`.
