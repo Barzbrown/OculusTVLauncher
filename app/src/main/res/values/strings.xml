@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Chiaki (TV)</string>
     <string name="target_package">com.metallic.chiaki</string>
+    <string name="error_launch">Unable to launch %1$s. Please make sure it is installed.</string>
 </resources>
