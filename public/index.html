@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Oculus TV Launcher</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        background-color: #10131a;
+        color: #e8ecf2;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      main {
+        max-width: 720px;
+        padding: 2.5rem;
+        border-radius: 18px;
+        background: rgba(12, 16, 24, 0.82);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: 0.04em;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.5rem;
+        display: grid;
+        gap: 0.4rem;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      button.primary {
+        justify-self: start;
+        padding: 0.75rem 1.75rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(135deg, #56ccf2, #2f80ed);
+        color: white;
+        font-weight: 600;
+        transition: transform 120ms ease, box-shadow 120ms ease;
+      }
+
+      button.primary:focus-visible,
+      button.primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(47, 128, 237, 0.35);
+      }
+
+      footer {
+        font-size: 0.85rem;
+        opacity: 0.75;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Oculus TV Launcher</h1>
+        <p>
+          Load this page in the Quest Browser and select your target APK or
+          configuration file. The scene will load instantly&mdash;no build step
+          required.
+        </p>
+      </header>
+
+      <section>
+        <h2 class="sr-only">Launcher actions</h2>
+        <button class="primary" type="button" data-open="apk">Choose APK</button>
+        <button class="primary" type="button" data-open="config">Choose Config</button>
+      </section>
+
+      <section>
+        <h2 class="sr-only">Hints</h2>
+        <ul>
+          <li>Use the blue VR button to enter immersive mode.</li>
+          <li>Files never leave your device; everything runs locally.</li>
+          <li>Refresh the page to reset the launcher state.</li>
+        </ul>
+      </section>
+
+      <footer>
+        Works best on Quest Browser v26 or newer. Connect and share files via
+        USB to make them visible to the file picker.
+      </footer>
+    </main>
+
+    <input
+      id="apk-picker"
+      type="file"
+      accept=".apk,application/vnd.android.package-archive"
+      hidden
+    />
+    <input
+      id="config-picker"
+      type="file"
+      accept="application/json,text/json"
+      hidden
+    />
+
+    <script type="module">
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+      import { VRButton } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/webxr/VRButton.js";
+
+      window.THREE = THREE;
+      window.VRButton = VRButton;
+    </script>
+    <script type="module" src="../src/main.js"></script>
+  </body>
+</html>

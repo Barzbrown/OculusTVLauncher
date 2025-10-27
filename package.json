@@ -1,0 +1,17 @@
+{
+  "name": "oculus-tv-launcher",
+  "version": "2.0.0",
+  "description": "Static Oculus TV launcher prototype served without a build step.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "oculus",
+    "quest",
+    "webxr",
+    "three.js"
+  ],
+  "author": "",
+  "license": "MIT"
+}
