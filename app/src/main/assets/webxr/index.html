@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ChatGPT VR Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="scene.js" defer></script>
+  </head>
+  <body>
+    <a-scene renderer="colorManagement: true" background="color: #05060a">
+      <a-entity id="environment">
+        <a-entity light="type: ambient; intensity: 0.4; color: #9bb0ff"></a-entity>
+        <a-entity light="type: directional; intensity: 0.6; color: #d0d8ff" position="-1 1 0"></a-entity>
+        <a-sky color="#030712"></a-sky>
+        <a-entity geometry="primitive: circle; radius: 12" rotation="-90 0 0"
+                  material="shader: flat; color: #0d1323; opacity: 0.9"></a-entity>
+      </a-entity>
+
+      <a-entity id="rig" position="0 1.6 3">
+        <a-entity id="player" camera look-controls wasd-controls>
+          <a-entity cursor="fuse: false" raycaster="objects: .interactive"
+                    position="0 0 -1"
+                    geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015"
+                    material="color: #7fffd4; shader: flat"></a-entity>
+        </a-entity>
+        <a-entity laser-controls="hand: left" raycaster="objects: .interactive"></a-entity>
+        <a-entity laser-controls="hand: right" raycaster="objects: .interactive"></a-entity>
+      </a-entity>
+
+      <a-entity id="ui-root" position="0 1.6 -2">
+        <a-entity id="title" text="value: ChatGPT Nexus; align: center; width: 2.8; color: #eff6ff;"
+                  position="0 0.8 0"></a-entity>
+
+        <a-plane id="info-panel" width="2.6" height="1.4" position="0 -0.05 0"
+                 material="color: #111827; opacity: 0.92; shader: flat">
+          <a-entity position="0 0.35 0.01"
+                    text="value: Step into your personal ChatGPT workspace.\nWhen you're ready, select the glowing button below to launch ChatGPT in the Oculus Browser.; align: center; width: 2.3; color: #cbd5f5; wrapCount: 36"></a-entity>
+        </a-plane>
+
+        <a-entity id="launch-button" class="interactive" geometry="primitive: plane; width: 1.5; height: 0.4"
+                  position="0 -0.55 0.02"
+                  material="color: #2563eb; opacity: 0.95; shader: flat"
+                  open-chatgpt-on-click button-hover>
+          <a-entity text="value: Enter ChatGPT; align: center; width: 2.0; color: #f8fafc"
+                    position="0 0 0.01"></a-entity>
+        </a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
