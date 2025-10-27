@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Chiaki (TV)</string>
-    <string name="target_package">com.metallic.chiaki</string>
+    <string name="app_name">QuestGPT VR Launcher</string>
+    <string name="target_url">https://questgpt.preview.emergentagent.com/</string>
 </resources>
