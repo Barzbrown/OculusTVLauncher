@@ -60,32 +60,63 @@ function updateTexture(board) {
   }
 }
 
-function handleImage(board) {
+function drawBoardImage(board, image) {
+  const { ctx, canvas } = board;
+  const maxWidth = canvas.width - 120;
+  const maxHeight = 240;
+  const x = 60;
+  const y = canvas.height - maxHeight - 60;
+  let drawWidth = maxWidth;
+  let drawHeight = (image.height / image.width) * drawWidth;
+  if (drawHeight > maxHeight) {
+    drawHeight = maxHeight;
+    drawWidth = (image.width / image.height) * drawHeight;
+  }
+  const offsetX = x + (maxWidth - drawWidth) / 2;
+  const offsetY = y + (maxHeight - drawHeight) / 2;
+  ctx.fillStyle = 'rgba(0,0,0,0.08)';
+  ctx.fillRect(x, y, maxWidth, maxHeight);
+  ctx.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+}
+
+function ensureBoardImage(board) {
   if (!board.imageUrl) {
     return;
   }
+
+  const currentUrl = board.imageUrl;
+
+  if (board.imageElement && board.imageSource === currentUrl) {
+    if (board.imageElement.complete && board.imageElement.naturalWidth > 0) {
+      drawBoardImage(board, board.imageElement);
+    }
+    return;
+  }
+
+  if (board.imageLoading && board.imageSource === currentUrl) {
+    return;
+  }
+
   const img = new Image();
   img.crossOrigin = 'anonymous';
+  board.imageElement = null;
+  board.imageSource = currentUrl;
+  board.imageLoading = true;
   img.onload = () => {
-    const { ctx, canvas } = board;
-    const maxWidth = canvas.width - 120;
-    const maxHeight = 240;
-    const x = 60;
-    const y = canvas.height - maxHeight - 60;
-    let drawWidth = maxWidth;
-    let drawHeight = (img.height / img.width) * drawWidth;
-    if (drawHeight > maxHeight) {
-      drawHeight = maxHeight;
-      drawWidth = (img.width / img.height) * drawHeight;
-    }
-    const offsetX = x + (maxWidth - drawWidth) / 2;
-    const offsetY = y + (maxHeight - drawHeight) / 2;
-    board.ctx.fillStyle = 'rgba(0,0,0,0.08)';
-    board.ctx.fillRect(x, y, maxWidth, maxHeight);
-    board.ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    board.imageLoading = false;
+    board.imageElement = img;
+    board.imageSource = currentUrl;
+    drawBoardBackground(board);
+    drawBoardImage(board, img);
     updateTexture(board);
   };
-  img.src = board.imageUrl;
+  img.onerror = () => {
+    board.imageLoading = false;
+    if (board.imageSource === currentUrl) {
+      board.imageElement = null;
+    }
+  };
+  img.src = currentUrl;
 }
 
 export function createBoard({ title, body, imageUrl, type, position }) {
@@ -108,6 +139,9 @@ export function createBoard({ title, body, imageUrl, type, position }) {
     title: title || 'Board',
     body: body || '',
     imageUrl: imageUrl || null,
+    imageElement: null,
+    imageSource: null,
+    imageLoading: false,
     type: type || 'note',
     canvas,
     ctx,
@@ -125,7 +159,7 @@ export function createBoard({ title, body, imageUrl, type, position }) {
 export function redrawBoard(board) {
   drawBoardBackground(board);
   if (board.imageUrl) {
-    handleImage(board);
+    ensureBoardImage(board);
   }
   updateTexture(board);
 }
